@@ -34,7 +34,8 @@ func executeLambda(ctx context.Context, request events.APIGatewayV2HTTPRequest) 
 	status, message := handlers.Handlers(path, method, body, header, request)
 
 	headerResp := map[string]string{
-		"Content-Type": "application/json",
+		"Access-Control-Allow-Origin": "*",
+		"Content-Type":                "application/json",
 	}
 	res = &events.APIGatewayProxyResponse{
 		StatusCode: status,
