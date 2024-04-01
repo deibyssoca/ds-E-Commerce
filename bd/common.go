@@ -46,3 +46,51 @@ func ConnStr(keys models.SecretRDSJson) string {
 	fmt.Println(dsn)
 	return dsn
 }
+
+func UserIsAdmin(userUUID string) (bool, string) {
+	if err := DbConnect(); err != nil {
+		return false, err.Error()
+	}
+	query := "SELECT 1 FROM users WHERE User_UUID='" + userUUID + "' AND User_Statud = 0"
+	fmt.Printf("Query : %s", query)
+
+	rows, err := Db.Query(query)
+	if err != nil {
+		return false, err.Error()
+	}
+
+	var value string
+	rows.Next()
+	rows.Scan(&value)
+	fmt.Printf("UserIsAdmin => %s", value)
+
+	if value == "1" {
+		return true, ""
+	}
+
+	return false, "User is not Admin"
+}
+
+func InsertCategory(mc models.Category) (int64, error) {
+	fmt.Println("InsertCategory registration begins")
+	if err := DbConnect(); err != nil {
+		return 0, err
+	}
+	defer Db.Close()
+	query := "INSERT INTO category (Categ_Name, Categ_Path) VALUES ('" + mc.CategName + "','" + mc.CategPath + " ')"
+	fmt.Printf("Query : %s", query)
+
+	result, err := Db.Exec(query)
+	if err != nil {
+		fmt.Println(err.Error())
+		return 0, err
+	}
+
+	LastInsertId, err2 := result.LastInsertId()
+	if err2 != nil {
+		fmt.Println(err2.Error())
+		return 0, err2
+	}
+	fmt.Println("InsertCategory registration OK")
+	return LastInsertId, nil
+}
