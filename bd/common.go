@@ -51,7 +51,7 @@ func UserIsAdmin(userUUID string) (bool, string) {
 	if err := DbConnect(); err != nil {
 		return false, err.Error()
 	}
-	query := "SELECT 1 FROM users WHERE User_UUID='" + userUUID + "' AND User_Statud = 0"
+	query := "SELECT 1 FROM users WHERE User_UUID='" + userUUID + "' AND User_Status = 0"
 	fmt.Printf("Query : %s", query)
 
 	rows, err := Db.Query(query)
