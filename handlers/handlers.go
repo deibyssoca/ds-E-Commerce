@@ -29,7 +29,7 @@ func Handlers(path string, method string, body string, headers map[string]string
 	case "addr":
 		return addressProcess(body, path, method, user, idn, request)
 	case "cate":
-		return categoryProcess(body, path, method, user, idn, request)
+		return categoryProcess(body, method, user, idn, request)
 	case "orde":
 		return orderProcess(body, path, method, user, idn, request)
 	}
@@ -43,9 +43,11 @@ func userProcess(body string, path string, method string, user string, id string
 func productProcess(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 	return http.StatusBadRequest, "Method invalid"
 }
-func categoryProcess(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+func categoryProcess(body string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+	fmt.Println("In categoryProcess")
 	switch method {
 	case "POST":
+		fmt.Println("Case POST")
 		return routers.InsertCategory(body, user)
 	}
 	return http.StatusBadRequest, "Method invalid"
