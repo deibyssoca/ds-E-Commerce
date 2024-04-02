@@ -2,6 +2,7 @@ package routers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -11,6 +12,7 @@ import (
 
 func InsertCategory(body string, User string) (int, string) {
 	var mc models.Category
+	fmt.Println("Inicio InsertCategory")
 	// convierto a Body en un slice de byte
 	if err := json.Unmarshal([]byte(body), &mc); err != nil {
 		return http.StatusBadRequest, "Error in data received " + err.Error()
