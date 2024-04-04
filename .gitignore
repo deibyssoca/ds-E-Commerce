@@ -1,3 +1,7 @@
 main
 main.zip
 upload.bat
+**/.terraform/*
+*.tfstate
+bootstrap
+lambda-handler.zip
