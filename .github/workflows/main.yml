@@ -11,7 +11,6 @@ permissions:
 env:
   TF_LOG: INFO
   AWS_REGION: us-east-1   
-  # AWS_REGION: us-east-1   ${{ secrets.AWS_REGION }}
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -26,7 +25,7 @@ jobs:
       - name: Configure AWS credentials from AWS account
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::637423383096:role/github-actions-2
+          role-to-assume: arn:aws:iam::637423383096:role/ds-github-bucket-role
           aws-region: us-east-1  
           role-session-name: GitHub-OIDC-TERRAFORM
           audience: sts.amazonaws.com
