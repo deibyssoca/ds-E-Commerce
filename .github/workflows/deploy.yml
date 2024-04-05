@@ -10,7 +10,8 @@ permissions:
       pull-requests: write # This is required for gh bot to comment PR
 env:
   TF_LOG: INFO
-  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_REGION: us-east-1   
+  # AWS_REGION: us-east-1   ${{ secrets.AWS_REGION }}
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -25,8 +26,9 @@ jobs:
       - name: Configure AWS credentials from AWS account
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: arn:aws:iam::637423383096:role/ds-rol-aws
+          #role-to-assume: ${{ secrets.AWS_ROLE }}
+          aws-region: us-east-1  
           role-session-name: GitHub-OIDC-TERRAFORM
 
       - name: Setup Terraform
@@ -42,9 +44,9 @@ jobs:
       - name: Terraform Init
         id: init
         env:
-          AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-          AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
-        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
+          AWS_BUCKET_NAME: ds-e-commerce-bucket
+          AWS_BUCKET_KEY_NAME: ds-e-commerce-bucket
+        run: terraform init -backend-config="bucket=ds-e-commerce-bucket" -backend-config="key=ds-e-commerce-bucket" -backend-config="region=us-east-1"
 
       - name: Terraform Validate
         id: validate
