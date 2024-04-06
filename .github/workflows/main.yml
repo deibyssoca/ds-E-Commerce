@@ -22,14 +22,6 @@ jobs:
       
       - name: Archive binary
         run: zip lambda_function.zip main
-      
-      - name: Configure AWS credentials from AWS account
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-session-name: GitHub-OIDC-TERRAFORM
-          audience: sts.amazonaws.com
 
       - name: Upload binary to S3
         uses: actions/aws/cli@v2
