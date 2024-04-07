@@ -26,18 +26,18 @@ jobs:
       - name: Upload binary to S3
         uses: imehedi/actions-awscli-v2@latest
         with:
-          args: s3 cp lambda_function.zip s3://ds-e-commerce-bucket/lambda_function.zip  # Reemplaza "your-bucket-name" con el nombre de tu bucket de S3
+          args: s3 cp lambda_function.zip s3://${{ secrets.AWS_BUCKET_NAME }}/lambda_function.zip  # Reemplaza "your-bucket-name" con el nombre de tu bucket de S3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: us-east-1  # Reemplaza con tu región AWS
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}  # Reemplaza con tu región AWS
 
       - name: Update Lambda function
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1  # Reemplaza con tu región AWS
+          aws-region: ${{ secrets.AWS_REGION }}  # Reemplaza con tu región AWS
           
       - name: Update Lambda function
         run: aws lambda update-function-code --function-name ${{ env.AWS_LAMBDA_NAME }} --s3-bucket ${{ secrets.AWS_BUCKET_KEY_NAME }} --s3-key lambda_function.zip
