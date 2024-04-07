@@ -21,7 +21,7 @@ jobs:
         run: go build -tags lambda.norpc -o bootstrap main.go  
       
       - name: Archive binary
-        run: zip lambda_function.zip main
+        run: zip lambda_function.zip bootstrap
 
       - name: Upload binary to S3
         uses: imehedi/actions-awscli-v2@latest
