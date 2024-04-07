@@ -40,4 +40,4 @@ jobs:
           aws-region: us-east-1
             
       - name: Update Lambda function
-        run: aws lambda update-function-code --function-name ${{ secrets.AWS_LAMBDA_NAME }} --s3-bucket ${{ secrets.AWS_BUCKET_KEY_NAME }} --s3-key lambda_function.zip
+        run: aws lambda update-function-code --function-name ${{ secrets.AWS_LAMBDA_NAME }} --s3-bucket ${{ secrets.AWS_BUCKET_NAME }} --s3-key lambda_function.zip
