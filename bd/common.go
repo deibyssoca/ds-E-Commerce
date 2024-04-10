@@ -70,27 +70,3 @@ func UserIsAdmin(userUUID string) (bool, string) {
 
 	return false, "User is not Admin"
 }
-
-func InsertCategory(mc models.Category) (int64, error) {
-	fmt.Println("InsertCategory registration begins")
-	if err := DbConnect(); err != nil {
-		return 0, err
-	}
-	defer Db.Close()
-	query := "INSERT INTO category (Categ_Name, Categ_Path) VALUES ('" + mc.CategName + "','" + mc.CategPath + " ')"
-	fmt.Printf("Query : %s", query)
-
-	result, err := Db.Exec(query)
-	if err != nil {
-		fmt.Println(err.Error())
-		return 0, err
-	}
-
-	LastInsertId, err2 := result.LastInsertId()
-	if err2 != nil {
-		fmt.Println(err2.Error())
-		return 0, err2
-	}
-	fmt.Println("InsertCategory registration OK")
-	return LastInsertId, nil
-}
