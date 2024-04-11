@@ -52,6 +52,9 @@ func categoryProcess(body string, method string, user string, id int, request ev
 	case "PUT":
 		fmt.Println("Case PUT")
 		return routers.UpdateCategory(body, user, id)
+	case "DELETE":
+		fmt.Println("Case DELETE")
+		return routers.DeleteCategory(body, user, id)
 	}
 	return http.StatusBadRequest, "Method invalid"
 }

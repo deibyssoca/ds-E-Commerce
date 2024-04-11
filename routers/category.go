@@ -58,3 +58,18 @@ func UpdateCategory(body string, User string, id int) (int, string) {
 	}
 	return http.StatusOK, "Update OK"
 }
+
+func DeleteCategory(body string, User string, id int) (int, string) {
+	if id == 0 {
+		return http.StatusBadRequest, "You must specify the Id of the category to delete"
+	}
+
+	if isAdmin, msg := bd.UserIsAdmin(User); !isAdmin {
+		return http.StatusBadRequest, msg
+	}
+
+	if err := bd.DeleteCategory(id); err != nil {
+		return http.StatusBadRequest, "An error occurred while trying to DELETE the category " + strconv.Itoa(id) + " - " + err.Error()
+	}
+	return http.StatusOK, "Delete OK"
+}
