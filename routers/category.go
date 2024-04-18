@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/deibyssoca/ds-E-Commerce/bd"
 	"github.com/deibyssoca/ds-E-Commerce/models"
 )
@@ -72,4 +73,37 @@ func DeleteCategory(body string, User string, id int) (int, string) {
 		return http.StatusBadRequest, "An error occurred while trying to DELETE the category " + strconv.Itoa(id) + " - " + err.Error()
 	}
 	return http.StatusOK, "Delete OK"
+}
+
+func SelectCategories(body string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	var err error
+	var categId int
+	var path string
+	var name string
+
+	if len(request.QueryStringParameters["categId"]) > 0 {
+		categId, err = strconv.Atoi(request.QueryStringParameters["categId"])
+		if err != nil {
+			return http.StatusInternalServerError, "An error occurred when converting the value " + request.QueryStringParameters["categId"] + " to integer"
+		}
+	} else {
+		if len(request.QueryStringParameters["path"]) > 0 {
+			path = request.QueryStringParameters["path"]
+		}
+		if len(request.QueryStringParameters["name"]) > 0 {
+			name = request.QueryStringParameters["name"]
+		}
+	}
+
+	collection, err2 := bd.SelectCategories(categId, name, path)
+	if err2 != nil {
+		return http.StatusBadRequest, "An error occurred in getting the category(ies) " + err2.Error()
+	}
+
+	Categ, err3 := json.Marshal(collection)
+	if err3 != nil {
+		return http.StatusBadRequest, "An error occurred in convert to JSON " + err3.Error()
+	}
+	return http.StatusOK, string(Categ)
+
 }
