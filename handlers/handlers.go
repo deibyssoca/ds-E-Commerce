@@ -41,6 +41,21 @@ func userProcess(body string, path string, method string, user string, id string
 	return http.StatusBadRequest, "Method invalid"
 }
 func productProcess(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+	fmt.Println("In ProductProcess")
+	switch method {
+	case "POST":
+		fmt.Println("Case POST")
+		return routers.InsertProduct(body, user)
+		// case "PUT":
+		// 	fmt.Println("Case PUT")
+		// 	return routers.UpdateCategory(body, user, id)
+		// case "DELETE":
+		// 	fmt.Println("Case DELETE")
+		// 	return routers.DeleteCategory(body, user, id)
+		// case "GET":
+		// 	fmt.Println("Case SELECT")
+		// 	return routers.SelectCategories(body, request)
+	}
 	return http.StatusBadRequest, "Method invalid"
 }
 func categoryProcess(body string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
